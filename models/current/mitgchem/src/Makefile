@@ -1,7 +1,7 @@
 # (1) Set the environment variables TMMROOT and MITGCMROOT to point to the top level 
 #     of the TMM and MITgcm code, respectively.
 #
-MITGCMROOT = /data2/spk/MITgcm_latest/MITgcm
+MITGCMROOT = /home/jml1/MITgcm/MITgcm_66j
 #
 TMMBASE = ${TMMROOT}/driver/current
 MODELBASE = ${TMMROOT}/models/current/mitgchem/src
@@ -31,7 +31,7 @@ ifneq (,$(findstring ftn,$(COMPILER)))
 	FC_FLAGS+=-s real64
 endif
 
-MYPATHS = $(TMMBASE):$(MODELBASE):$(MITGCMROOT)/model/src:$(MITGCMROOT)/model/inc:$(MITGCMROOT)/eesupp/src:$(MITGCMROOT)/eesupp/inc:$(MITGCMROOT)/pkg/ptracers:$(MITGCMROOT)/pkg/gchem:$(MITGCMROOT)/pkg/dic
+MYPATHS = $(TMMBASE):$(MODELBASE):$(MITGCMROOT)/model/src:$(MITGCMROOT)/model/inc:$(MITGCMROOT)/eesupp/src:$(MITGCMROOT)/eesupp/inc:$(MITGCMROOT)/pkg/rw:$(MITGCMROOT)/pkg/ptracers:$(MITGCMROOT)/pkg/gchem:$(MITGCMROOT)/pkg/dic
 
 INCLUDEPATHS = $(addprefix -I,$(subst :, ,$(MYPATHS)))
 
@@ -53,9 +53,11 @@ SRFMODEL = different_multiple.F print.F utils.F write_utils.F open_copy_data_fil
             dic_read_co2_pickup.F alk_surfforcing.F carbon_chem.F fe_chem.F bio_export.F \
             calcite_saturation.F insol.F car_flux.F o2_surfforcing.F car_flux_omega_top.F phos_flux.F \
             mitgcm_stubs.F mitgchem_ini.F mitgchem_model.F mitgchem_copy_data.F \
-            mitgchem_diagnostics.F landsource.F
+            mitgchem_diagnostics.F landsource.F rw_get_suffix.F
 
 OPTFILE = DIC_OPTIONS.h
+
+LIBS = -L/usr/lib64/ -lssl -lcrypto 
 
 ifneq ($(strip $(OPTFILE)),)
 # Make sure OPTFILE is present in the current directory
@@ -93,7 +95,7 @@ CPPCMD = cat $< |  cpp  -traditional -P $(INCLUDEPATHS) -DWORDLENGTH=4 -DALLOW_T
 	$(CC) $(INCLUDEPATHS) $(PCC_FLAGS) $(CFLAGS) $(CCPPFLAGS) -c -o $@ $<
 
 $(EXE): $(OBJTMM) $(OBJCMODEL) $(OBJFMODEL) chkopts
-	-$(CLINKER) -o $@ $(OBJTMM) $(OBJCMODEL) $(OBJFMODEL) $(PETSC_MAT_LIB)
+	-$(CLINKER) -o $@ $(OBJTMM) $(OBJCMODEL) $(OBJFMODEL) $(LIBS) $(PETSC_MAT_LIB) 
 
 cleanall:
 	make clean

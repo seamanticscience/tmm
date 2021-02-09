@@ -33,7 +33,7 @@ C dissolution only below saturation horizon following method by Karsten Friis
 C Include self-shading effect by phytoplankton
 #undef LIGHT_CHL
 C Include iron sediment source using DOP flux
-#define SEDFE
+#undef SEDFE
 
 #endif /* ALLOW_DIC */
 #endif /* DIC_OPTIONS_H */

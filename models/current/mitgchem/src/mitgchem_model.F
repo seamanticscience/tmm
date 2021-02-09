@@ -14,7 +14,10 @@ C !INTERFACE: ==========================================================
      &                 latloc,
 #endif
 #ifdef ALLOW_FE     
-     &                 InputFeloc,
+     &                 InputFelocSurf,
+#ifdef SUBSURFACE_FE_SOURCES
+     &                 InputFelocDeep,
+#endif
 #endif
 #ifdef LIGHT_CHL
      &                 chlloc,
@@ -59,7 +62,10 @@ C  PTR_FE               :: iron
       real*8 latloc
 #endif
 #ifdef ALLOW_FE
-      real*8 InputFeloc
+      real*8 InputFelocSurf
+#ifdef SUBSURFACE_FE_SOURCES
+      real*8 InputFelocDeep
+#endif
 #endif
 #ifdef LIGHT_CHL
       real*8 chlloc
@@ -102,7 +108,9 @@ C     Copy surface variables
       CHL(1,1,1,1)=chlloc
 #endif
 #ifdef ALLOW_FE
-	  InputFe(1,1,1,1)=InputFeloc
+	  InputFe(1,1,1,1)=InputFelocSurf
+#ifdef SUBSURFACE_FE_SOURCES
+          HydroInputHe3(1,1,1,1)=InputFelocDeep
 #endif	  
 #ifdef ALLOW_OLD_VIRTUALFLUX
       gsm_DIC=gsm_DICloc
