@@ -15,7 +15,10 @@ extern void mitgchem_model_(PetscInt *Nrloc, PetscInt *myIter, PetscScalar *myTi
 							PetscScalar *locallat, 
 #endif
 #ifdef ALLOW_FE                                    
-							PetscScalar *localinputfe, 
+							PetscScalar *localinputfe_surf, 
+#ifdef SUBSURFACE_FE_SOURCES
+							PetscScalar *localinputfe_deep, 
+#endif
 #endif
 #ifdef LIGHT_CHL
                             PetscScalar *chlloc,

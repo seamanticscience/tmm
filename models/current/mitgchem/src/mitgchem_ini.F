@@ -44,6 +44,7 @@ C  PTR_FE               :: iron
       real*8 thetaloc(Nrloc),saltloc(Nrloc),pHloc,SILICAloc
       real*8 hFacCloc(Nrloc),recip_hFacCloc(Nrloc),drFloc(Nr)
       real*8 deltaTloc
+      real*8 Ro_SeaLevel
       integer ip
 
 C !LOCAL VARIABLES: ====================================================
